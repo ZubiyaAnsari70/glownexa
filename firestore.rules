@@ -1,0 +1,79 @@
+// Firestore Security Rules for GlowNexa
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Users can read and write their own user document
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Skin analyses rules
+    match /skinAnalyses/{analysisId} {
+      // Users can read their own analyses
+      allow read: if request.auth != null && 
+                     request.auth.uid == resource.data.userId;
+      
+      // Users can create new analyses (must include userId and be authenticated)
+      allow create: if request.auth != null && 
+                       request.auth.uid == request.resource.data.userId &&
+                       validateSkinAnalysis(request.resource.data);
+      
+      // Users can update their own analyses (limited fields)
+      allow update: if request.auth != null && 
+                       request.auth.uid == resource.data.userId &&
+                       validateSkinAnalysisUpdate(request.resource.data);
+      
+      // Users can delete their own analyses
+      allow delete: if request.auth != null && 
+                       request.auth.uid == resource.data.userId;
+    }
+    
+    // Hair analyses rules (for future hair scan feature)
+    match /hairAnalyses/{analysisId} {
+      allow read: if request.auth != null && 
+                     request.auth.uid == resource.data.userId;
+      allow create: if request.auth != null && 
+                       request.auth.uid == request.resource.data.userId;
+      allow update: if request.auth != null && 
+                       request.auth.uid == resource.data.userId;
+      allow delete: if request.auth != null && 
+                       request.auth.uid == resource.data.userId;
+    }
+    
+    // User preferences and settings
+    match /userPreferences/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Public data (read-only for authenticated users)
+    match /publicData/{document=**} {
+      allow read: if request.auth != null;
+    }
+  }
+}
+
+// Validation function for skin analysis data
+function validateSkinAnalysis(data) {
+  return data.keys().hasAll(['userId', 'userDetails', 'imageData', 'aiAnalysis', 'metadata']) &&
+         data.userDetails.keys().hasAll(['age', 'gender', 'skinType']) &&
+         data.imageData.keys().hasAll(['cloudinaryUrl', 'cloudinaryPublicId']) &&
+         data.aiAnalysis.keys().hasAll(['response', 'analysisDate']) &&
+         data.metadata.keys().hasAll(['createdAt', 'status']) &&
+         data.userDetails.age is number &&
+         data.userDetails.age > 0 &&
+         data.userDetails.age < 150 &&
+         data.userDetails.gender is string &&
+         data.userDetails.skinType is string &&
+         data.imageData.cloudinaryUrl is string &&
+         data.imageData.cloudinaryPublicId is string &&
+         data.aiAnalysis.response is string &&
+         data.metadata.status in ['pending', 'completed', 'error'];
+}
+
+// Validation function for skin analysis updates
+function validateSkinAnalysisUpdate(data) {
+  // Only allow updates to specific fields
+  return data.diff(resource.data).affectedKeys().hasOnly(['metadata', 'userFeedback', 'notes']) &&
+         (!data.diff(resource.data).affectedKeys().hasAny(['metadata']) || 
+          data.metadata.keys().hasOnly(['updatedAt', 'status', 'notes']));
+}
