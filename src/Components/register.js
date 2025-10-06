@@ -59,7 +59,7 @@ const Register = () => {
    
     // Firebase built-in verification page configuration
     const actionCodeSettings = {
-      url: 'https://glownexa-4258w3ju4-zubiyaansari70s-projects.vercel.app/login', // Where to redirect after verification
+      url: 'https://glownexa.vercel.app/login', // Where to redirect after verification
       handleCodeInApp: false, // Use Firebase's built-in page, not your app
     };
 
