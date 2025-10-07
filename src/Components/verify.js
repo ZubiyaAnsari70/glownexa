@@ -71,7 +71,7 @@ const EmailVerificationHandler = () => {
     
     try {
       const actionCodeSettings = {
-        url: 'http://localhost:3000/verify',
+        url: 'https://glownexa.vercel.app/verify',
         handleCodeInApp: false,
       };
 
