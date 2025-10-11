@@ -5,7 +5,7 @@ import { uploadToCloudinary } from './cloudinary';
 import { saveSkinAnalysis } from './firestoreService';
 import { auth } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
-import { GoogleGenerativeAI } from "@google/generative-ai";
+
 
 // The main component for the skin scan upload page.
 const SkinScan = () => {
@@ -134,138 +134,338 @@ This analysis is for informational purposes only and should not replace professi
   // Handles form submission and calls Gemini API
   // इस पूरे फंक्शन को कॉपी करके पुराने वाले से बदल दें
 const handleSubmit = async (event) => {
-  event.preventDefault();
 
-  if (parseInt(age) < 1) {
-    showMessage('Age must be at least 1 year', 'error');
-    return;
-  }
-  if (!file) {
-    showMessage('Please upload a photo.', 'error');
-    return;
-  }
-  if (!currentUser) {
-    showMessage('Please log in to continue.', 'error');
-    return;
-  }
+    event.preventDefault();
 
-  setIsAnalyzing(true);
-  setAnalysisResult(null);
-  setCurrentAnalysisId(null);
 
-  try {
-    // Step 1: Upload image to Cloudinary (यह वैसा ही रहेगा)
-    showMessage('Uploading image to cloud storage...', 'success');
-    setUploadingToCloudinary(true);
-    const cloudinaryResult = await uploadToCloudinary(file);
-    setUploadingToCloudinary(false);
 
-    if (!cloudinaryResult.success) {
-      throw new Error(`Image upload failed: ${cloudinaryResult.error}`);
-    }
+    if (parseInt(age) < 1) {
 
-    showMessage('Image uploaded successfully! Analyzing with AI...', 'success');
+      showMessage('Age must be at least 1 year', 'error');
 
-    // --- यहाँ से नया SDK वाला कोड शुरू होता है ---
+      return;
 
-    // 2. SDK को अपनी API Key से शुरू करें
-    const apiKey = process.env.REACT_APP_GEMINI_API_KEY;
-    const genAI = new GoogleGenerativeAI(apiKey);
+    }
 
-    // 3. सही मॉडल चुनें (gemini-1.5-flash सबसे तेज और अच्छा है)
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    if (!file) {
 
-    // 4. आपका पूरा प्रॉम्प्ट (जैसा आपने लिखा था)
-    const prompt = `As a dermatology AI assistant, please analyze this skin image for the following user:
+      showMessage('Please upload a photo.', 'error');
+
+      return;
+
+    }
+
+    if (!currentUser) {
+
+      showMessage('Please log in to continue.', 'error');
+
+      return;
+
+    }
+
+
+
+    setIsAnalyzing(true);
+
+    setAnalysisResult(null);
+
+    setCurrentAnalysisId(null);
+
+
+
+    try {
+
+      // Step 1: Upload image to Cloudinary
+
+      showMessage('Uploading image to cloud storage...', 'success');
+
+      setUploadingToCloudinary(true);
+
+     
+
+      const cloudinaryResult = await uploadToCloudinary(file);
+
+      setUploadingToCloudinary(false);
+
+
+
+      if (!cloudinaryResult.success) {
+
+        throw new Error(`Image upload failed: ${cloudinaryResult.error}`);
+
+      }
+
+
+
+      showMessage('Image uploaded successfully! Analyzing with AI...', 'success');
+
+
+
+      // Step 2: Convert image to base64 for Gemini API
+
+      const imageBase64 = await fileToBase64(file);
+
+     
+
+      // Step 3: Call Gemini API for analysis
+
+      const apiKey = process.env.REACT_APP_GEMINI_API_KEY;
+
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+
+
+
+      // Prepare comprehensive prompt for Gemini
+
+      const prompt = `As a dermatology AI assistant, please analyze this skin image for the following user:
+
+
 
 User Details:
+
 - Age: ${age} years
+
 - Gender: ${gender}
+
 - Skin Type: ${skinType}
+
+
 
 Please provide a comprehensive analysis in the following format:
 
+
+
 1. SKIN CONDITION ASSESSMENT:
-   - Overall skin condition
-   - Any visible concerns or abnormalities
-   - Skin texture and appearance
+
+   - Overall skin condition
+
+   - Any visible concerns or abnormalities
+
+   - Skin texture and appearance
+
+
 
 2. POTENTIAL ISSUES IDENTIFIED:
-   - List any potential skin problems visible
-   - Severity level (mild/moderate/severe)
-   - Areas of concern
+
+   - List any potential skin problems visible
+
+   - Severity level (mild/moderate/severe)
+
+   - Areas of concern
+
+
 
 3. RECOMMENDATIONS:
-   - Skincare routine suggestions
-   - Ingredients to look for
-   - Ingredients to avoid
+
+   - Skincare routine suggestions
+
+   - Ingredients to look for
+
+   - Ingredients to avoid
+
+
 
 4. LIFESTYLE TIPS:
-   - Diet recommendations
-   - Sleep and stress management
-   - Environmental factors to consider
+
+   - Diet recommendations
+
+   - Sleep and stress management
+
+   - Environmental factors to consider
+
+
 
 5. WHEN TO CONSULT A DERMATOLOGIST:
-   - Warning signs to watch for
-   - Recommended follow-up timeline
+
+   - Warning signs to watch for
+
+   - Recommended follow-up timeline
+
+
 
 Please provide practical, actionable advice while emphasizing that this analysis is for informational purposes only and should not replace professional medical consultation.`;
 
-    const imageBase64 = await fileToBase64(file);
-    const imagePart = {
-      inlineData: {
-        data: imageBase64,
-        mimeType: file.type,
-      },
-    };
 
-    // 5. API को SDK के ज़रिए कॉल करें
-    const result = await model.generateContent([prompt, imagePart]);
-    const response = await result.response;
-    const resultText = response.text();
 
-    setAnalysisResult(resultText);
-    showMessage('AI analysis complete! Saving to your profile...', 'success');
+      // Prepare request body with correct format for Gemini 1.5
 
-    // --- SDK वाला कोड यहाँ खत्म होता है ---
+      const body = {
 
-    // Step 6: Save analysis data to Firestore (यह वैसा ही रहेगा)
-    const analysisData = {
-      age: parseInt(age),
-      gender: gender,
-      skinType: skinType,
-      originalFileName: file.name,
-      cloudinaryUrl: cloudinaryResult.url,
-      cloudinaryPublicId: cloudinaryResult.public_id,
-      prompt: prompt,
-      aiResponse: resultText
-    };
+        contents: [{
 
-    const saveResult = await saveSkinAnalysis(currentUser.uid, analysisData);
-    
-    if (saveResult.success) {
-      setCurrentAnalysisId(saveResult.analysisId);
-      showMessage('Analysis saved successfully to your profile!', 'success');
-    } else {
-      console.error('Failed to save analysis:', saveResult.error);
-      showMessage('Analysis complete, but failed to save to profile.', 'error');
-    }
+          parts: [
 
-  } catch (error) {
-    console.error('Analysis error:', error);
-    setAnalysisResult(null);
-    let errorMessage = `Failed to analyze: ${error.message}. Please try again.`;
-    if (error.message.includes('API key not valid')) {
-        errorMessage = 'Failed to analyze: The API Key is not valid. Please check your configuration.';
-    } else if (error.message.includes('quota')) {
-        errorMessage = 'Failed to analyze: You have exceeded your API quota. Please try again later.';
-    }
-    showMessage(errorMessage, 'error');
-  } finally {
-    setIsAnalyzing(false);
-    setUploadingToCloudinary(false);
-  }
-};
+            { text: prompt },
+
+            {
+
+              inline_data: {
+
+                mime_type: file.type,
+
+                data: imageBase64
+
+              }
+
+            }
+
+          ]
+
+        }],
+
+        generationConfig: {
+
+          temperature: 0.4,
+
+          topK: 32,
+
+          topP: 1,
+
+          maxOutputTokens: 4096,
+
+        },
+
+        safetySettings: [
+
+          {
+
+            category: "HARM_CATEGORY_HARASSMENT",
+
+            threshold: "BLOCK_MEDIUM_AND_ABOVE"
+
+          },
+
+          {
+
+            category: "HARM_CATEGORY_HATE_SPEECH",
+
+            threshold: "BLOCK_MEDIUM_AND_ABOVE"
+
+          },
+
+          {
+
+            category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+
+            threshold: "BLOCK_MEDIUM_AND_ABOVE"
+
+          },
+
+          {
+
+            category: "HARM_CATEGORY_DANGEROUS_CONTENT",
+
+            threshold: "BLOCK_MEDIUM_AND_ABOVE"
+
+          }
+
+        ]
+
+      };
+
+
+
+      const response = await fetch(url, {
+
+        method: 'POST',
+
+        headers: { 'Content-Type': 'application/json' },
+
+        body: JSON.stringify(body)
+
+      });
+
+
+
+      if (!response.ok) {
+
+        const errorData = await response.json();
+
+        console.error('API Error:', errorData);
+
+        throw new Error(`API request failed: ${response.status} - ${errorData.error?.message || 'Unknown error'}`);
+
+      }
+
+
+
+      const data = await response.json();
+
+      console.log('API Response:', data);
+
+     
+
+      const resultText = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'No analysis could be generated. Please try again with a clearer image.';
+
+
+
+      setAnalysisResult(resultText);
+
+      showMessage('AI analysis complete! Saving to your profile...', 'success');
+
+
+
+      // Step 4: Save analysis data to Firestore
+
+      const analysisData = {
+
+        age: parseInt(age),
+
+        gender: gender,
+
+        skinType: skinType,
+
+        originalFileName: file.name,
+
+        cloudinaryUrl: cloudinaryResult.url,
+
+        cloudinaryPublicId: cloudinaryResult.public_id,
+
+        prompt: prompt,
+
+        aiResponse: resultText
+
+      };
+
+
+
+      const saveResult = await saveSkinAnalysis(currentUser.uid, analysisData);
+
+     
+
+      if (saveResult.success) {
+
+        setCurrentAnalysisId(saveResult.analysisId);
+
+        showMessage('Analysis saved successfully to your profile!', 'success');
+
+      } else {
+
+        console.error('Failed to save analysis:', saveResult.error);
+
+        showMessage('Analysis complete, but failed to save to profile.', 'error');
+
+      }
+
+
+
+    } catch (error) {
+
+      console.error('Analysis error:', error);
+
+      setAnalysisResult(null);
+
+      showMessage(`Failed to analyze: ${error.message}. Please try again.`, 'error');
+
+    } finally {
+
+      setIsAnalyzing(false);
+
+      setUploadingToCloudinary(false);
+
+    }
+
+  };
 
   return (
     <div className="min-h-screen relative overflow-hidden">
