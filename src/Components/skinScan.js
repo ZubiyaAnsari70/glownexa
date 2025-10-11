@@ -170,7 +170,7 @@ This analysis is for informational purposes only and should not replace professi
       
       // Step 3: Call Gemini API for analysis
       const apiKey = process.env.REACT_APP_GEMINI_API_KEY;
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+      const url = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
       // Prepare comprehensive prompt for Gemini
       const prompt = `As a dermatology AI assistant, please analyze this skin image for the following user:
