@@ -12,7 +12,7 @@ import History from './Components/History';
 import ProtectedRoute from "./Components/ProtectedRoute";
 import EmailVerificationHandler from "./Components/verify"
 
-
+// Force Vercel to rebuild - 18 Oct
 function App() {
   return (
   
