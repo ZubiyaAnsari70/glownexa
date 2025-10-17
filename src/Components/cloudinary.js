@@ -5,7 +5,7 @@
 const cloudinaryConfig = {
   cloud_name: process.env.REACT_APP_CLOUDINARY_CLOUD_NAME,
   upload_preset: process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET,
-  api_key: process.env.REACT_APP_CLOUDINARY_API_KEY,
+  
 };
 
 // Upload image to Cloudinary using unsigned upload (browser-compatible)
