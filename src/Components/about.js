@@ -1,139 +1,245 @@
-import React from 'react';
-import { Link } from 'react-router-dom'; // Use this if you are using React Router for navigation
-// If not using React Router, you can replace <Link> with <a> tags.
+import React, { useState, useEffect } from 'react';
+import { Zap, Smartphone, Microscope, ArrowRight, Sparkles } from 'lucide-react';
 
-// You can import icons from a library like 'react-icons'
-// yarn add react-icons
-// import { FaUpload, FaStethoscope, FaClipboardList } from 'react-icons/fa';
+export default function About() {
+  const [scrollY, setScrollY] = useState(0);
+  const [visibleSections, setVisibleSections] = useState({});
 
-const About = () => {
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const features = [
+    {
+      icon: Microscope,
+      title: 'Advanced AI Technology',
+      description: 'Our machine learning models are trained on thousands of medical images to provide accurate and reliable diagnostics.'
+    },
+    {
+      icon: Zap,
+      title: 'Instant Results',
+      description: 'Get preliminary diagnosis and recommendations in seconds, not days. Save time without compromising accuracy.'
+    },
+   
+    {
+      icon: Smartphone,
+      title: 'User-Friendly',
+      description: 'Simple, intuitive interface designed for everyone. No medical knowledge required to get started.'
+    }
+  ];
+
+  const values = [
+    {
+      title: 'Accuracy',
+      description: 'We\'re committed to providing the most accurate diagnostics through continuous improvement and validation.'
+    },
+    {
+      title: 'Accessibility',
+      description: 'Healthcare should be accessible to everyone, everywhere. We break down barriers to professional diagnosis.'
+    },
+    {
+      title: 'Compassion',
+      description: 'We understand that skin and hair conditions can be emotionally challenging. We treat every user with care and empathy.'
+    },
+    {
+      title: 'Transparency',
+      description: 'We clearly communicate how our AI works and what the limitations are. No false promises, just honest insights.'
+    }
+  ];
+
+ 
   return (
-    <div className="bg-gray-50 min-h-screen py-16 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
-        
-        {/* --- Header --- */}
-        <h1 className="text-4xl font-extrabold text-center text-gray-900 sm:text-5xl mb-12">
-          About <span className="text-indigo-600">Glownexa</span>
-        </h1>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-teal-50 to-cyan-50">
+      <style>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-20px); }
+        }
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        @keyframes slideInLeft {
+          from {
+            opacity: 0;
+            transform: translateX(-50px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        @keyframes slideInRight {
+          from {
+            opacity: 0;
+            transform: translateX(50px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        @keyframes glow {
+          0%, 100% { box-shadow: 0 0 20px rgba(6, 182, 212, 0.3); }
+          50% { box-shadow: 0 0 40px rgba(6, 182, 212, 0.6); }
+        }
+        .float { animation: float 3s ease-in-out infinite; }
+        .fade-in-up { animation: fadeInUp 0.8s ease-out; }
+        .slide-in-left { animation: slideInLeft 0.8s ease-out; }
+        .slide-in-right { animation: slideInRight 0.8s ease-out; }
+        .glow-box { animation: glow 2s ease-in-out infinite; }
+      `}</style>
 
-        {/* --- Our Mission Section --- */}
-        <div className="bg-white shadow-xl rounded-lg overflow-hidden p-6 md:p-10 mb-10">
-          <h2 className="text-3xl font-bold text-indigo-700 mb-4">Our Mission</h2>
-          <p className="text-lg text-gray-700 leading-relaxed">
-            At Glownexa, our mission is to make preliminary skin and hair health assessment accessible, convenient, and informative. We understand that getting answers about dermatological concerns can be slow and difficult. We leverage cutting-edge **artificial intelligence** to provide instant, confidential analysis, helping you understand your condition better and guiding you on when to seek professional medical advice.
-          </p>
+      {/* Navbar */}
+      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-sm border-b border-cyan-100">
+        <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+          <div className="text-2xl font-bold bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text text-transparent flex items-center gap-2">
+            <Sparkles className="w-6 h-6 text-cyan-600" />
+            GlowNexa
+          </div>
+          <ul className="hidden md:flex gap-8 text-gray-700 font-medium">
+            <li><a href="#home" className="hover:text-cyan-600 transition-colors duration-300">Home</a></li>
+            <li><a href="#about" className="hover:text-cyan-600 transition-colors duration-300">About</a></li>
+
+            <li><a href="#contact" className="hover:text-cyan-600 transition-colors duration-300">Contact</a></li>
+          </ul>
         </div>
+      </nav>
 
-        {/* --- How It Works Section --- */}
-        <div className="bg-white shadow-xl rounded-lg overflow-hidden p-6 md:p-10 mb-10">
-          <h2 className="text-3xl font-bold text-indigo-700 mb-8 text-center">
-            How It Works
-          </h2>
-          <div className="grid md:grid-cols-3 gap-8 text-center">
-            
-            {/* Step 1 */}
-            <div className="flex flex-col items-center">
-              {/* Icon Placeholder (Example using Tailwind) */}
-              <div className="bg-indigo-100 rounded-full h-20 w-20 flex items-center justify-center mb-4">
-                <svg className="h-10 w-10 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                </svg>
-                {/* Or use: <FaUpload className="h-10 w-10 text-indigo-600" /> */}
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">1. Upload Image</h3>
-              <p className="text-gray-600">Take or upload a clear, well-lit photo of the affected skin or hair area.</p>
-            </div>
-
-            {/* Step 2 */}
-            <div className="flex flex-col items-center">
-              <div className="bg-indigo-100 rounded-full h-20 w-20 flex items-center justify-center mb-4">
-                <svg className="h-10 w-10 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17.25l.038-.038A5.25 5.25 0 0112 13.5a5.25 5.25 0 012.212 3.712l.038.038M9.75 17.25H12m0 0H9.75m2.25 0V15m0 2.25v-2.25m0 0a5.25 5.25 0 01-5.25-5.25v-1.5a5.25 5.25 0 1110.5 0v1.5a5.25 5.25 0 01-5.25 5.25m0 0H9.75" />
-                </svg>
-                {/* Or use: <FaStethoscope className="h-10 w-10 text-indigo-600" /> */}
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">2. Get AI Analysis</h3>
-              <p className="text-gray-600">Our AI model analyzes the image against a vast database of conditions in seconds.</p>
-            </div>
-            
-            {/* Step 3 */}
-            <div className="flex flex-col items-center">
-              <div className="bg-indigo-100 rounded-full h-20 w-20 flex items-center justify-center mb-4">
-                <svg className="h-10 w-10 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                {/* Or use: <FaClipboardList className="h-10 w-10 text-indigo-600" /> */}
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">3. Receive Insights</h3>
-              <p className="text-gray-600">Get a report with potential matching conditions and next steps.</p>
-            </div>
+      {/* Hero Section */}
+      <div className="relative py-24 px-4 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-cyan-100/50 via-teal-100/50 to-blue-100/50"></div>
+        <div className="max-w-6xl mx-auto relative z-10 text-center">
+          <div className="fade-in-up">
+            <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-cyan-600 via-teal-600 to-blue-600 bg-clip-text text-transparent leading-tight">
+              About GlowNexa
+            </h1>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+              Revolutionizing Skin & Hair Health Through Advanced Disease Detection Technology
+            </p>
+          </div>
+          <div className="mt-8 flex justify-center gap-4">
+            <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></div>
+            <div className="w-2 h-2 rounded-full bg-teal-400 animate-pulse delay-100"></div>
+            <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse delay-200"></div>
           </div>
         </div>
-
-        {/* --- Important Disclaimer --- */}
-        <div className="bg-red-50 border-l-4 border-red-500 text-red-900 p-6 rounded-lg shadow-md mb-10">
-          <h3 className="text-xl font-bold mb-2">Important Medical Disclaimer</h3>
-          <p className="text-md leading-relaxed">
-            Glownexa is an informational tool and **is not a substitute for professional medical diagnosis or treatment.** Our AI provides a preliminary analysis based on patterns, but it is not a doctor and can make mistakes. Always consult a qualified dermatologist or healthcare provider for any health concerns or before making any medical decisions.
-          </p>
-        </div>
-        
-        {/* --- Meet the Team (Placeholder) --- */}
-        <div className="bg-white shadow-xl rounded-lg overflow-hidden p-6 md:p-10 mb-10">
-          <h2 className="text-3xl font-bold text-indigo-700 mb-8 text-center">
-            Meet Our Team
-          </h2>
-          <p className="text-center text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-            We are a passionate team of developers, designers, and AI specialists dedicated to making health technology more accessible.
-          </p>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            
-            {/* Team Member 1 (Placeholder) */}
-            <div className="text-center">
-              <div className="bg-gray-200 h-32 w-32 rounded-full mx-auto mb-4 flex items-center justify-center text-gray-400">
-                {/* Replace with <img /> tag */}
-                Image
-              </div>
-              <h4 className="text-xl font-semibold text-gray-900">Your Name</h4>
-              <p className="text-indigo-600">Lead Developer / Project Lead</p>
-            </div>
-            
-            {/* Team Member 2 (Placeholder) */}
-            <div className="text-center">
-              <div className="bg-gray-200 h-32 w-32 rounded-full mx-auto mb-4 flex items-center justify-center text-gray-400">
-                {/* Replace with <img /> tag */}
-                Image
-              </div>
-              <h4 className="text-xl font-semibold text-gray-900">Team Member</h4>
-              <p className="text-indigo-600">AI/ML Specialist</p>
-            </div>
-            
-            {/* Team Member 3 (Placeholder) */}
-            <div className="text-center">
-              <div className="bg-gray-200 h-32 w-32 rounded-full mx-auto mb-4 flex items-center justify-center text-gray-400">
-                {/* Replace with <img /> tag */}
-                Image
-              </div>
-              <h4 className="text-xl font-semibold text-gray-900">Team Member</h4>
-              <p className="text-indigo-600">UX/UI Designer</p>
-            </div>
-            
-          </div>
-        </div>
-
-        {/* --- Call to Action (CTA) --- */}
-        <div className="text-center">
-          <Link
-            to="/detector" // Change this to your detection page route
-            className="inline-block bg-indigo-600 text-white font-bold text-lg px-8 py-4 rounded-lg shadow-md hover:bg-indigo-700 transition duration-300"
-          >
-            Try the Glownexa Detector
-          </Link>
-        </div>
-
       </div>
+
+      {/* Main Container */}
+      <div className="max-w-6xl mx-auto px-4 py-12">
+        
+        {/* Mission Section */}
+        <div className="fade-in-up bg-white/60 backdrop-blur rounded-2xl shadow-lg p-12 mb-12 border border-cyan-100/50 hover:shadow-2xl transition-shadow duration-500">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-1 h-8 bg-gradient-to-b from-cyan-600 to-teal-600"></div>
+            <h2 className="text-4xl font-bold text-gray-800">Our Mission</h2>
+          </div>
+          <p className="text-gray-700 mb-6 text-lg leading-relaxed">
+            At GlowNexa, we're on a mission to make professional-grade skin and hair disease detection accessible to everyone. We believe that early detection and accurate diagnosis are the foundation of effective treatment. By harnessing the power of artificial intelligence and medical expertise, we're transforming how people identify and manage dermatological and trichological conditions.
+          </p>
+          <p className="text-gray-700 text-lg leading-relaxed">
+            Our platform empowers individuals to take control of their skin and hair health with confidence, providing reliable, fast, and compassionate care from the comfort of their homes.
+          </p>
+        </div>
+
+        {/* Features Section */}
+        <div className="mb-12">
+          <div className="fade-in-up flex items-center gap-3 mb-8">
+            <div className="w-1 h-8 bg-gradient-to-b from-cyan-600 to-teal-600"></div>
+            <h2 className="text-4xl font-bold text-gray-800">Why GlowNexa?</h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {features.map((feature, idx) => {
+              const Icon = feature.icon;
+              return (
+                <div
+                  key={idx}
+                  className="fade-in-up bg-white/60 backdrop-blur p-8 rounded-2xl border border-cyan-100/50 hover:border-cyan-300 hover:shadow-xl hover:-translate-y-2 transition-all duration-500 group"
+                  style={{ animationDelay: `${idx * 0.1}s` }}
+                >
+                  <div className="w-14 h-14 bg-gradient-to-br from-cyan-100 to-teal-100 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                    <Icon className="text-cyan-600 w-7 h-7" />
+                  </div>
+                  <h3 className="font-bold text-gray-800 mb-3 text-lg">{feature.title}</h3>
+                  <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Values Section */}
+        <div className="mb-12">
+          <div className="fade-in-up flex items-center gap-3 mb-8">
+            <div className="w-1 h-8 bg-gradient-to-b from-cyan-600 to-teal-600"></div>
+            <h2 className="text-4xl font-bold text-gray-800">Our Core Values</h2>
+          </div>
+          <div className="grid md:grid-cols-2 gap-6">
+            {values.map((value, idx) => (
+              <div
+                key={idx}
+                className="fade-in-up bg-gradient-to-br from-cyan-50/80 to-teal-50/80 backdrop-blur p-8 rounded-2xl border border-cyan-200/50 hover:border-cyan-400 hover:shadow-lg transition-all duration-500 group"
+                style={{ animationDelay: `${idx * 0.15}s` }}
+              >
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-teal-500 rounded-full flex-shrink-0 flex items-center justify-center mt-1 group-hover:scale-110 transition-transform duration-300">
+                    <Sparkles className="text-white w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-gray-800 mb-2 text-lg">{value.title}</h3>
+                    <p className="text-gray-600 leading-relaxed">{value.description}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+       
+
+        {/* Journey Section */}
+        <div className="fade-in-up bg-white/60 backdrop-blur rounded-2xl shadow-lg p-12 mb-12 border border-cyan-100/50 hover:shadow-2xl transition-shadow duration-500">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-1 h-8 bg-gradient-to-b from-cyan-600 to-teal-600"></div>
+            <h2 className="text-4xl font-bold text-gray-800">Our Journey</h2>
+          </div>
+          <p className="text-gray-700 mb-6 text-lg leading-relaxed">
+            GlowNexa was founded in 2023 by a team of healthcare professionals and technologists who recognized a gap in accessible dermatological care. What started as a passion project has evolved into a comprehensive platform used by thousands of people worldwide.
+          </p>
+          <p className="text-gray-700 text-lg leading-relaxed">
+            Today, we continue to innovate, expand our diagnostic capabilities, and partner with medical institutions to ensure our technology remains at the forefront of dermatological AI. Our commitment is to make quality healthcare more accessible, affordable, and empowering for everyone.
+          </p>
+        </div>
+
+        {/* CTA Section */}
+        <div className="fade-in-up relative overflow-hidden rounded-2xl shadow-2xl p-12 text-center mb-12 glow-box">
+          <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-teal-500 to-blue-500"></div>
+          <div className="relative z-10">
+            <h2 className="text-4xl font-bold text-white mb-4">Ready to Transform Your Skin & Hair Health?</h2>
+            <p className="text-lg text-white/90 mb-8 max-w-2xl mx-auto">Join thousands of users who trust GlowNexa for their dermatological needs.</p>
+            <button className="bg-white text-cyan-600 px-10 py-4 rounded-xl font-bold hover:scale-105 hover:shadow-2xl transition-all duration-300 flex items-center justify-center gap-2 mx-auto hover:gap-3">
+              Get Started Today
+              <ArrowRight className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <footer className="bg-white/60 backdrop-blur border-t border-cyan-100/50 text-gray-700 text-center py-8 mt-12">
+        <p className="font-medium">&copy; 2025 GlowNexa. All rights reserved. | Privacy Policy | Terms of Service | Contact Us</p>
+      </footer>
     </div>
   );
-};
-
-export default About;
+}
