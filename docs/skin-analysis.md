@@ -49,7 +49,7 @@ const SkinScan = () => {
 ```javascript
 {/* Age Selection */}
 <div>
-  <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
+  <label className="text-sm font-semibold text-gray-700 mb-2 flex items-center">
     <Baby className="h-4 w-4 mr-2 text-purple-600" />
     Age Range
   </label>
@@ -71,7 +71,7 @@ const SkinScan = () => {
 
 {/* Gender Selection */}
 <div>
-  <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
+  <label className="text-sm font-semibold text-gray-700 mb-2 flex items-center">
     <User className="h-4 w-4 mr-2 text-purple-600" />
     Gender
   </label>
@@ -90,7 +90,7 @@ const SkinScan = () => {
 
 {/* Skin Type Selection */}
 <div>
-  <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
+  <label className="text-sm font-semibold text-gray-700 mb-2 flex items-center">
     <Sun className="h-4 w-4 mr-2 text-purple-600" />
     Skin Type
   </label>
@@ -201,7 +201,7 @@ const handleSubmit = async (e) => {
     
     // Step 4: Call Gemini API for analysis
     const apiKey = process.env.REACT_APP_GEMINI_API_KEY;
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
 
     const response = await fetch(url, {
       method: 'POST',

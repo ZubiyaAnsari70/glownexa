@@ -11,6 +11,7 @@ import Contact from './Components/Contact';
 import History from './Components/History';
 import ProtectedRoute from "./Components/ProtectedRoute";
 import EmailVerificationHandler from "./Components/verify"
+import AiInfo from './Components/AiInfo';
 
 // Force Vercel to rebuild - 18 Oct
 function App() {
@@ -29,6 +30,8 @@ function App() {
               <About />
           }
         />
+
+        <Route path="/ai-info" element={<AiInfo />} />
 
         {/* ✅ Ye sab sirf login hone ke baad open honge */}
         <Route

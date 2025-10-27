@@ -227,7 +227,7 @@ const Login = () => {
           </div>
         </div>
 
-        {/* Right Form Section - Transparent */}
+        {/* Right Form Section  */}
         <div className="w-full md:w-1/2 p-8 text-gray-800 flex items-center h-full relative">
           <div className="w-full px-10 relative z-10">
             <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Sign In</h2>
@@ -377,7 +377,7 @@ const Login = () => {
       </div>
 
       {/* Custom CSS for animations */}
-      <style jsx>{`
+  <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0px) translateX(0px); }
           25% { transform: translateY(-20px) translateX(10px); }

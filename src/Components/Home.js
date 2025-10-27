@@ -827,7 +827,10 @@ m
                   >
                     Start Your Analysis
                   </button>
-                  <button className="px-8 py-4 bg-white/20 backdrop-blur-sm text-white border border-white/30 rounded-xl font-semibold text-lg hover:bg-white/30 transition-all duration-300 hover:scale-105">
+                  <button
+                    onClick={() => navigate('/ai-info')}
+                    className="px-8 py-4 bg-white/20 backdrop-blur-sm text-white border border-white/30 rounded-xl font-semibold text-lg hover:bg-white/30 transition-all duration-300 hover:scale-105"
+                  >
                     Learn More About AI
                   </button>
                 </div>
@@ -902,8 +905,8 @@ m
         </div>
       </footer>
 
-      {/* Enhanced Custom Animations */}
-      <style jsx>{`
+  {/* Enhanced Custom Animations */}
+  <style>{`
         #slider-container::-webkit-scrollbar {
           display: none;
         }

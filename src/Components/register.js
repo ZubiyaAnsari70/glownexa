@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 
 import { doc, setDoc } from 'firebase/firestore';
-import { auth, db } from './firebase'; // Same components folder
+import { auth, db } from './firebase'; 
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -315,7 +315,7 @@ const Register = () => {
       </div>
 
       {/* Custom CSS for animations */}
-      <style jsx>{`
+  <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0px) translateX(0px); }
           25% { transform: translateY(-20px) translateX(10px); }

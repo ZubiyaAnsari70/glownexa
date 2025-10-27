@@ -1,17 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Zap, Smartphone, Microscope, ArrowRight, Sparkles } from 'lucide-react';
 
 export default function About() {
-  const [scrollY, setScrollY] = useState(0);
-  const [visibleSections, setVisibleSections] = useState({});
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const features = [
     {
@@ -236,9 +226,69 @@ export default function About() {
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="bg-white/60 backdrop-blur border-t border-cyan-100/50 text-gray-700 text-center py-8 mt-12">
-        <p className="font-medium">&copy; 2025 GlowNexa. All rights reserved. | Privacy Policy | Terms of Service | Contact Us</p>
+      {/* Footer (styled like Home footer but with About page colors) */}
+      <footer className="bg-white/60 backdrop-blur border-t border-cyan-100/50 text-gray-700 py-16 relative overflow-hidden mt-12">
+        {/* Decorative background shapes (subtle, matching About color scheme) */}
+        <div className="absolute inset-0 opacity-6">
+          <div className="absolute top-10 left-10 w-40 h-40 bg-cyan-200 rounded-full float blur-3xl"></div>
+          <div className="absolute bottom-10 right-10 w-32 h-32 bg-teal-200 rounded-full float blur-3xl"></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-8 relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="col-span-1 md:col-span-2 slide-in-left">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 bg-gradient-to-r from-cyan-600 to-teal-600 rounded-full flex items-center justify-center animate-bounce-subtle hover:scale-110 transition-all duration-300">
+                  <span className="text-white font-bold text-xl animate-pulse">G</span>
+                </div>
+                <h3 className="text-2xl font-bold">GlowNexa</h3>
+              </div>
+              <p className="text-gray-600 text-lg leading-relaxed mb-6 max-w-md fade-in-up">
+                Revolutionizing skin and hair care with AI-powered analysis and personalized treatment recommendations.
+              </p>
+              <div className="flex gap-4">
+                <div className="w-10 h-10 bg-white/60 rounded-full flex items-center justify-center border border-cyan-100 hover:bg-cyan-50 transition-all duration-300 cursor-pointer hover:scale-110">
+                  <span className="text-sm">📧</span>
+                </div>
+                <div className="w-10 h-10 bg-white/60 rounded-full flex items-center justify-center border border-cyan-100 hover:bg-teal-50 transition-all duration-300 cursor-pointer hover:scale-110" style={{animationDelay: '0.1s'}}>
+                  <span className="text-sm">📱</span>
+                </div>
+                <div className="w-10 h-10 bg-white/60 rounded-full flex items-center justify-center border border-cyan-100 hover:bg-blue-50 transition-all duration-300 cursor-pointer hover:scale-110" style={{animationDelay: '0.2s'}}>
+                  <span className="text-sm">🌐</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="slide-in" style={{animationDelay: '0.2s'}}>
+              <h4 className="text-lg font-semibold mb-4 text-cyan-600">Services</h4>
+              <ul className="space-y-2 text-gray-600">
+                <li className="hover:text-cyan-700 transition-all duration-300 cursor-pointer hover:translate-x-2 fade-in-up">Skin Analysis</li>
+                <li className="hover:text-cyan-700 transition-all duration-300 cursor-pointer hover:translate-x-2 fade-in-up" style={{animationDelay: '0.1s'}}>Hair Analysis</li>
+                <li className="hover:text-cyan-700 transition-all duration-300 cursor-pointer hover:translate-x-2 fade-in-up" style={{animationDelay: '0.2s'}}>Treatment Plans</li>
+                <li className="hover:text-cyan-700 transition-all duration-300 cursor-pointer hover:translate-x-2 fade-in-up" style={{animationDelay: '0.3s'}}>Product Recommendations</li>
+              </ul>
+            </div>
+
+            <div className="slide-in" style={{animationDelay: '0.4s'}}>
+              <h4 className="text-lg font-semibold mb-4 text-teal-600">Support</h4>
+              <ul className="space-y-2 text-gray-600">
+                <li className="hover:text-cyan-700 transition-all duration-300 cursor-pointer hover:translate-x-2 fade-in-up">Help Center</li>
+                <li className="hover:text-cyan-700 transition-all duration-300 cursor-pointer hover:translate-x-2 fade-in-up" style={{animationDelay: '0.1s'}}>Contact Us</li>
+                <li className="hover:text-cyan-700 transition-all duration-300 cursor-pointer hover:translate-x-2 fade-in-up" style={{animationDelay: '0.2s'}}>Privacy Policy</li>
+                <li className="hover:text-cyan-700 transition-all duration-300 cursor-pointer hover:translate-x-2 fade-in-up" style={{animationDelay: '0.3s'}}>Terms of Service</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="border-t border-cyan-100 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center fade-in-up">
+            <p className="text-gray-600 text-sm">
+              © 2025 GlowNexa. All rights reserved.
+            </p>
+            <p className="text-gray-600 text-sm mt-4 md:mt-0">
+              Made with ❤️ for healthier skin and hair
+            </p>
+          </div>
+        </div>
       </footer>
     </div>
   );

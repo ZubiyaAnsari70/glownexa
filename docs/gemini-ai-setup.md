@@ -24,7 +24,7 @@ This guide explains how Google's Gemini AI is integrated for advanced image anal
 
 3. **API Configuration**
    ```
-   Model: gemini-1.5-flash
+  Model: gemini-2.5-flash
    Endpoint: https://generativelanguage.googleapis.com/v1beta/models/
    Features: Vision + Text Generation
    Rate Limits: Check current quotas
@@ -95,7 +95,7 @@ const makeGeminiRequest = async (imageBase64, promptText) => {
   };
 
   const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`,
+  `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -162,7 +162,7 @@ const analyzeWithAI = async (imageBase64) => {
     setIsAnalyzing(true);
     
     const apiKey = process.env.REACT_APP_GEMINI_API_KEY;
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
 
     // Prepare comprehensive prompt
     const prompt = generateSkinAnalysisPrompt(age, gender, skinType);
@@ -283,7 +283,7 @@ const analyzeWithAI = async (imageBase64) => {
     
     const API_KEY = process.env.REACT_APP_GEMINI_API_KEY;
     
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
+  const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -598,7 +598,7 @@ const aiRateLimiter = new RateLimiter(10, 60000); // 10 requests per minute
 
 ```javascript
 const geminiConfig = {
-  model: 'gemini-1.5-flash',
+  model: 'gemini-2.5-flash',
   maxTokens: 4096,
   temperature: 0.7,
   topP: 0.8,

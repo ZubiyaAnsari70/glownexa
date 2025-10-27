@@ -49,7 +49,7 @@ const HairScan = () => {
 ```javascript
 {/* Age Selection - Same as skin analysis */}
 <div>
-  <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
+  <label className="text-sm font-semibold text-gray-700 mb-2 flex items-center">
     <Baby className="h-4 w-4 mr-2 text-orange-600" />
     Age Range
   </label>
@@ -71,7 +71,7 @@ const HairScan = () => {
 
 {/* Gender Selection - Same as skin analysis */}
 <div>
-  <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
+  <label className="text-sm font-semibold text-gray-700 mb-2 flex items-center">
     <User className="h-4 w-4 mr-2 text-orange-600" />
     Gender
   </label>
@@ -90,7 +90,7 @@ const HairScan = () => {
 
 {/* Hair Type Selection - Hair-specific options */}
 <div>
-  <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
+  <label className="text-sm font-semibold text-gray-700 mb-2 flex items-center">
     <Sun className="h-4 w-4 mr-2 text-orange-600" />
     Hair Type
   </label>

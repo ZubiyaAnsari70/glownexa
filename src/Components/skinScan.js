@@ -758,8 +758,8 @@ Please provide practical, actionable advice while emphasizing that this analysis
         </div>
       </div>
 
-      {/* Custom CSS Animations */}
-      <style jsx>{`
+  {/* Custom CSS Animations */}
+  <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0px) rotate(0deg); }
           50% { transform: translateY(-20px) rotate(180deg); }
