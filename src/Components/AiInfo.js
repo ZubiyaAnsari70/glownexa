@@ -8,7 +8,7 @@ const AiInfo = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-8">
       <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
         <div className="p-8">
-          <button onClick={() => navigate(-1)} className="text-sm text-slate-600 hover:underline mb-4">← Back</button>
+          
           <h1 className="text-3xl font-bold text-slate-900 mb-4">About the AI Behind GlowNexa</h1>
           <p className="text-slate-700 mb-4">GlowNexa uses modern machine learning models trained on curated dermatological datasets to provide initial assessments of skin and hair conditions. Our system is intended to assist users with early detection and educational information — it does not replace professional medical diagnosis.</p>
 
