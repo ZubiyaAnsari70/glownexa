@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Send, MapPin, Phone, Mail, Clock, CheckCircle, Sparkles, MessageCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Contact = () => {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
@@ -134,10 +135,22 @@ const Contact = () => {
             GlowNexa
           </div>
           <ul className="hidden md:flex gap-8 text-gray-700 font-medium">
-            <li><a href="#home" className="hover:text-amber-700 transition-colors duration-300">Home</a></li>
-            <li><a href="#about" className="hover:text-amber-700 transition-colors duration-300">About</a></li>
-            <li><a href="#contact" className="hover:text-amber-700 transition-colors duration-300">Contact</a></li>
-          </ul>
+  <li>
+    <Link to="/" className="hover:text-amber-700 transition-colors duration-300">
+      Home
+    </Link>
+  </li>
+  <li>
+    <Link to="/about" className="hover:text-amber-700 transition-colors duration-300">
+      About
+    </Link>
+  </li>
+  <li>
+    <Link to="/Contact" className="hover:text-amber-700 transition-colors duration-300">
+      Contact
+    </Link>
+  </li>
+</ul>
         </div>
       </nav>
 
@@ -301,68 +314,90 @@ const Contact = () => {
       </div>
 
       {/* Footer */}
-      <footer className="bg-white/60 backdrop-blur border-t border-amber-100/50 text-gray-700 py-16 relative overflow-hidden mt-12">
-        <div className="absolute inset-0 opacity-6">
-          <div className="absolute top-10 left-10 w-40 h-40 bg-amber-200 rounded-full float blur-3xl"></div>
-          <div className="absolute bottom-10 right-10 w-32 h-32 bg-orange-200 rounded-full float blur-3xl"></div>
-        </div>
+     <footer className="bg-white/60 backdrop-blur border-t border-amber-100/50 text-gray-700 py-16 relative overflow-hidden mt-12">
+      {/* Decorative blurs (Original amber/orange colors) */}
+      <div className="absolute inset-0 opacity-6">
+        <div className="absolute top-10 left-10 w-40 h-40 bg-amber-200 rounded-full float blur-3xl"></div>
+        <div className="absolute bottom-10 right-10 w-32 h-32 bg-orange-200 rounded-full float blur-3xl"></div>
+      </div>
 
-        <div className="max-w-7xl mx-auto px-8 relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="col-span-1 md:col-span-2 slide-in-left">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-gradient-to-r from-amber-700 to-orange-700 rounded-full flex items-center justify-center hover:scale-110 transition-all duration-300">
-                  <span className="text-white font-bold text-xl">G</span>
-                </div>
-                <h3 className="text-2xl font-bold">GlowNexa</h3>
+      <div className="max-w-7xl mx-auto px-8 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          {/* Column 1: Brand Info (Original styles and colors) */}
+          <div className="col-span-1 md:col-span-2 slide-in-left">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-12 h-12 bg-gradient-to-r from-amber-700 to-orange-700 rounded-full flex items-center justify-center hover:scale-110 transition-all duration-300">
+                <span className="text-white font-bold text-xl">G</span>
               </div>
-              <p className="text-gray-600 text-lg leading-relaxed mb-6 max-w-md fade-in-up">
-                Revolutionizing skin and hair care with AI-powered analysis and personalized treatment recommendations.
-              </p>
-              <div className="flex gap-4">
-                <div className="w-10 h-10 bg-white/60 rounded-full flex items-center justify-center border border-amber-100 hover:bg-amber-50 transition-all duration-300 cursor-pointer hover:scale-110">
-                  <span className="text-sm">📧</span>
-                </div>
-                <div className="w-10 h-10 bg-white/60 rounded-full flex items-center justify-center border border-amber-100 hover:bg-orange-50 transition-all duration-300 cursor-pointer hover:scale-110">
-                  <span className="text-sm">📱</span>
-                </div>
-                <div className="w-10 h-10 bg-white/60 rounded-full flex items-center justify-center border border-amber-100 hover:bg-yellow-50 transition-all duration-300 cursor-pointer hover:scale-110">
-                  <span className="text-sm">🌐</span>
-                </div>
+              <h3 className="text-2xl font-bold">GlowNexa</h3>
+            </div>
+            <p className="text-gray-600 text-lg leading-relaxed mb-6 max-w-md fade-in-up">
+              Revolutionizing skin and hair care with AI-powered analysis and personalized treatment recommendations.
+            </p>
+            <div className="flex gap-4">
+              <div className="w-10 h-10 bg-white/60 rounded-full flex items-center justify-center border border-amber-100 hover:bg-amber-50 transition-all duration-300 cursor-pointer hover:scale-110">
+                <span className="text-sm">📧</span>
               </div>
-            </div>
-
-            <div className="fade-in-up" style={{animationDelay: '0.2s'}}>
-              <h4 className="text-lg font-semibold mb-4 text-amber-700">Services</h4>
-              <ul className="space-y-2 text-gray-600">
-                <li className="hover:text-amber-800 transition-all duration-300 cursor-pointer hover:translate-x-2">Skin Analysis</li>
-                <li className="hover:text-amber-800 transition-all duration-300 cursor-pointer hover:translate-x-2">Hair Analysis</li>
-                <li className="hover:text-amber-800 transition-all duration-300 cursor-pointer hover:translate-x-2">Treatment Plans</li>
-                <li className="hover:text-amber-800 transition-all duration-300 cursor-pointer hover:translate-x-2">Product Recommendations</li>
-              </ul>
-            </div>
-
-            <div className="fade-in-up" style={{animationDelay: '0.4s'}}>
-              <h4 className="text-lg font-semibold mb-4 text-orange-700">Support</h4>
-              <ul className="space-y-2 text-gray-600">
-                <li className="hover:text-amber-800 transition-all duration-300 cursor-pointer hover:translate-x-2">Help Center</li>
-                <li className="hover:text-amber-800 transition-all duration-300 cursor-pointer hover:translate-x-2">Contact Us</li>
-                <li className="hover:text-amber-800 transition-all duration-300 cursor-pointer hover:translate-x-2">Privacy Policy</li>
-                <li className="hover:text-amber-800 transition-all duration-300 cursor-pointer hover:translate-x-2">Terms of Service</li>
-              </ul>
+              <div className="w-10 h-10 bg-white/60 rounded-full flex items-center justify-center border border-amber-100 hover:bg-orange-50 transition-all duration-300 cursor-pointer hover:scale-110">
+                <span className="text-sm">📱</span>
+              </div>
+              <div className="w-10 h-10 bg-white/60 rounded-full flex items-center justify-center border border-amber-100 hover:bg-yellow-50 transition-all duration-300 cursor-pointer hover:scale-110">
+                <span className="text-sm">🌐</span>
+              </div>
             </div>
           </div>
 
-          <div className="border-t border-amber-100 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center fade-in-up">
-            <p className="text-gray-600 text-sm">
-              © 2025 GlowNexa. All rights reserved.
-            </p>
-            <p className="text-gray-600 text-sm mt-4 md:mt-0">
-              Made with ❤️ for healthier skin and hair
-            </p>
+          {/* Column 2: Services (New structure from footer B, colors from footer A) */}
+          {/* Removed fade-in-up animation classes to match footer B */}
+          <div>
+            <h4 className="text-lg font-semibold mb-4 text-amber-700">Services</h4>
+            <ul className="space-y-2 text-gray-600">
+              {/* Using <Link> components and list items from footer B */}
+              <li className="hover:text-amber-800 transition-all duration-300 cursor-pointer hover:translate-x-2">
+                <Link to="/skinScan">Skin Analysis</Link>
+              </li>
+              <li className="hover:text-amber-800 transition-all duration-300 cursor-pointer hover:translate-x-2">
+                <Link to="/hairScan">Hair Analysis</Link>
+              </li>
+              <li className="hover:text-amber-800 transition-all duration-300 cursor-pointer hover:translate-x-2">
+                <Link to="/History">History</Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 3: Support (New structure from footer B, colors from footer A) */}
+          {/* Removed fade-in-up animation classes to match footer B */}
+          <div>
+            <h4 className="text-lg font-semibold mb-4 text-orange-700">Support</h4>
+            <ul className="space-y-2 text-gray-600">
+              {/* Using <Link> components and list items from footer B */}
+              <li className="hover:text-amber-800 transition-all duration-300 cursor-pointer hover:translate-x-2">
+                <Link to="/about">About</Link>
+              </li>
+              <li className="hover:text-amber-800 transition-all duration-300 cursor-pointer hover:translate-x-2">
+                <Link to="/contact">Contact Us</Link>
+              </li>
+              <li className="hover:text-amber-800 transition-all duration-300 cursor-pointer hover:translate-x-2">
+                <Link to="/privacy-policy">Privacy Policy</Link>
+              </li>
+              <li className="hover:text-amber-800 transition-all duration-300 cursor-pointer hover:translate-x-2">
+                <Link to="/AiInfo">Learn more about AI</Link>
+              </li>
+            </ul>
           </div>
         </div>
-      </footer>
+
+        {/* Bottom Bar (Original border color) */}
+        <div className="border-t border-amber-100 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center fade-in-up">
+          <p className="text-gray-600 text-sm">
+            © 2025 GlowNexa. All rights reserved.
+          </p>
+          <p className="text-gray-600 text-sm mt-4 md:mt-0">
+            Made with ❤️ for healthier skin and hair
+          </p>
+        </div>
+      </div>
+    </footer>
     </div>
   );
 };

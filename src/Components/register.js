@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 
 import { doc, setDoc } from 'firebase/firestore';
-import { auth, db } from './firebase'; 
+import { auth, db } from './firebase';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -25,9 +25,9 @@ const Register = () => {
       number: /\d/.test(password),
       special: /[!@#$%^&*(),.?":{}|<>]/.test(password)
     };
-    
+
     const isValid = Object.values(requirements).every(req => req);
-    
+
     return { requirements, isValid };
   };
 
@@ -56,23 +56,23 @@ const Register = () => {
       setLoading(false);
       return;
     }
-   
+
     // Firebase built-in verification page configuration
     const actionCodeSettings = {
-      url: 'https://glownexa.vercel.app/login', // Where to redirect after verification
+      url: 'http://localhost:3000/login', // Where to redirect after verification
       handleCodeInApp: false, // Use Firebase's built-in page, not your app
     };
 
     try {
       // Create user with email and password
       const userCredential = await createUserWithEmailAndPassword(
-        auth, 
-        formData.email, 
+        auth,
+        formData.email,
         formData.password
       );
-      
+
       const user = userCredential.user;
-      
+
       // Save additional user data to Firestore first
       await setDoc(doc(db, 'users', user.uid), {
         username: formData.username,
@@ -88,13 +88,13 @@ const Register = () => {
       setFormData({ username: "", email: "", password: "" });
 
       console.log('User registered successfully');
-      
+
       // Redirect to verify email page
       navigate("/verify");
-      
+
     } catch (error) {
       console.error('Registration error:', error);
-      
+
       // Better error messages
       switch (error.code) {
         case 'auth/email-already-in-use':
@@ -120,23 +120,23 @@ const Register = () => {
     <div className="h-screen relative overflow-hidden flex items-center justify-center">
       {/* Static Light Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-100 via-purple-50 to-pink-100"></div>
-      
+
       {/* Floating Animated Objects */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Large floating circles */}
         <div className="absolute top-10 left-10 w-64 h-64 bg-blue-200 bg-opacity-20 rounded-full blur-xl animate-float"></div>
         <div className="absolute top-32 right-20 w-80 h-80 bg-purple-200 bg-opacity-15 rounded-full blur-2xl animate-float-delayed"></div>
         <div className="absolute bottom-20 left-1/4 w-72 h-72 bg-pink-200 bg-opacity-20 rounded-full blur-xl animate-pulse-slow"></div>
-        
+
         {/* Medium floating shapes */}
         <div className="absolute top-1/4 left-1/2 w-48 h-48 bg-indigo-200 bg-opacity-15 rounded-full blur-lg animate-bounce-slow"></div>
         <div className="absolute bottom-1/3 right-1/4 w-56 h-56 bg-violet-200 bg-opacity-20 rounded-full blur-xl animate-float-reverse"></div>
-        
+
         {/* Small animated dots */}
         <div className="absolute top-20 left-1/3 w-16 h-16 bg-blue-300 bg-opacity-40 rounded-full animate-ping"></div>
         <div className="absolute bottom-40 right-1/3 w-12 h-12 bg-purple-300 bg-opacity-50 rounded-full animate-pulse"></div>
         <div className="absolute top-1/2 left-20 w-20 h-20 bg-pink-300 bg-opacity-35 rounded-full animate-bounce"></div>
-        
+
         {/* Geometric shapes */}
         <div className="absolute top-1/3 right-10 w-32 h-32 bg-gradient-to-r from-blue-300 to-purple-400 opacity-30 transform rotate-45 animate-spin-slow"></div>
         <div className="absolute bottom-1/4 left-1/3 w-24 h-24 bg-gradient-to-r from-indigo-300 to-pink-400 opacity-35 transform rotate-12 animate-wiggle"></div>
@@ -145,18 +145,18 @@ const Register = () => {
       {/* Glass container - Expanded height for password requirements */}
       <div className="relative z-10 w-11/12 md:w-4/5 max-w-6xl bg-white/10 backdrop-blur-lg rounded-xl shadow-2xl flex flex-col md:flex-row overflow-hidden min-h-[60vh] border border-white/30">
 
-       {/* Left Section with Light Gradient */}
+        {/* Left Section with Light Gradient */}
         <div className="w-full md:w-1/2 hidden md:flex flex-col justify-center relative overflow-hidden p-8">
           <div className="absolute inset-0 bg-gradient-to-br from-blue-200 via-purple-200 to-pink-200"></div>
           <div className="absolute inset-0 bg-gradient-to-tl from-indigo-100 via-transparent to-transparent opacity-60"></div>
-          
+
           <div className="absolute inset-0">
             <div className="absolute top-1/4 left-1/4 w-32 h-32 border-2 border-white/50 rounded-full animate-pulse"></div>
             <div className="absolute bottom-1/4 right-1/4 w-24 h-24 bg-white/30 rounded-full animate-ping"></div>
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 border-4 border-white/40 rounded-full animate-spin-slow"></div>
             <div className="absolute top-16 right-16 w-16 h-16 bg-blue-300/40 rotate-45 animate-bounce"></div>
           </div>
-          
+
           <div className="relative z-10 text-gray-800 text-center">
             <div>
               <h1 className="text-4xl font-bold mb-4 animate-fade-in">Welcome!</h1>
@@ -164,12 +164,12 @@ const Register = () => {
             </div>
           </div>
         </div>
-        
+
         {/* Right Form Section - Transparent */}
         <div className="w-full md:w-1/2 p-8 text-gray-800 flex items-center min-h-full relative">
           <div className="w-full px-10 relative z-10">
             <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Create Account</h2>
-            
+
             {error && (
               <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg">
                 {error}
@@ -189,7 +189,7 @@ const Register = () => {
                   required
                 />
               </div>
-              
+
               <div>
                 <label className="block mb-1 font-medium text-gray-700">Email</label>
                 <input
@@ -202,7 +202,7 @@ const Register = () => {
                   required
                 />
               </div>
-              
+
               <div>
                 <label className="block mb-1 font-medium text-gray-700">Password</label>
                 <input
@@ -210,17 +210,16 @@ const Register = () => {
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
-                  className={`w-full px-4 py-3 rounded-lg bg-white backdrop-blur-sm text-gray-800 placeholder-gray-600 outline-none focus:ring-2 transition-all duration-300 border ${
-                    formData.password && !passwordValidation.isValid 
-                      ? 'border-red-400 focus:ring-red-400/50' 
+                  className={`w-full px-4 py-3 rounded-lg bg-white backdrop-blur-sm text-gray-800 placeholder-gray-600 outline-none focus:ring-2 transition-all duration-300 border ${formData.password && !passwordValidation.isValid
+                      ? 'border-red-400 focus:ring-red-400/50'
                       : formData.password && passwordValidation.isValid
-                      ? 'border-green-400 focus:ring-green-400/50'
-                      : 'border-white/40 focus:ring-blue-400/50'
-                  }`}
+                        ? 'border-green-400 focus:ring-green-400/50'
+                        : 'border-white/40 focus:ring-blue-400/50'
+                    }`}
                   placeholder="Enter password"
                   required
                 />
-                
+
                 {/* Password Requirements */}
                 {showPasswordRequirements && (
                   <div className="mt-3 p-3 bg-white/20 backdrop-blur-sm rounded-lg border border-white/30">
@@ -247,34 +246,32 @@ const Register = () => {
                         <span>At least one special character (!@#$%^&*)</span>
                       </div>
                     </div>
-                    
+
                     {/* Password strength indicator */}
                     <div className="mt-3">
                       <div className="flex items-center space-x-2">
                         <span className="text-xs font-medium text-gray-700">Strength:</span>
                         <div className="flex-1 bg-gray-200 rounded-full h-2">
-                          <div 
-                            className={`h-2 rounded-full transition-all duration-300 ${
-                              Object.values(passwordValidation.requirements).filter(Boolean).length <= 2
+                          <div
+                            className={`h-2 rounded-full transition-all duration-300 ${Object.values(passwordValidation.requirements).filter(Boolean).length <= 2
                                 ? 'bg-red-500 w-1/4'
                                 : Object.values(passwordValidation.requirements).filter(Boolean).length <= 4
-                                ? 'bg-yellow-500 w-3/4'
-                                : 'bg-green-500 w-full'
-                            }`}
+                                  ? 'bg-yellow-500 w-3/4'
+                                  : 'bg-green-500 w-full'
+                              }`}
                           ></div>
                         </div>
-                        <span className={`text-xs font-medium ${
-                          Object.values(passwordValidation.requirements).filter(Boolean).length <= 2
+                        <span className={`text-xs font-medium ${Object.values(passwordValidation.requirements).filter(Boolean).length <= 2
                             ? 'text-red-600'
                             : Object.values(passwordValidation.requirements).filter(Boolean).length <= 4
-                            ? 'text-yellow-600'
-                            : 'text-green-600'
-                        }`}>
+                              ? 'text-yellow-600'
+                              : 'text-green-600'
+                          }`}>
                           {Object.values(passwordValidation.requirements).filter(Boolean).length <= 2
                             ? 'Weak'
                             : Object.values(passwordValidation.requirements).filter(Boolean).length <= 4
-                            ? 'Medium'
-                            : 'Strong'
+                              ? 'Medium'
+                              : 'Strong'
                           }
                         </span>
                       </div>
@@ -282,7 +279,7 @@ const Register = () => {
                   </div>
                 )}
               </div>
-              
+
               <button
                 type="submit"
                 disabled={loading || (formData.password && !passwordValidation.isValid)}
@@ -290,16 +287,16 @@ const Register = () => {
               >
                 {loading ? 'Creating Account...' : 'Register'}
               </button>
-              
+
               <div className="w-full flex items-center justify-center mt-6">
                 <p className="text-sm text-gray-600">
                   Already have an account?{" "}
-                  <a
-                    href="/login"
+                  <Link
+                    to="/login"
                     className="font-medium text-indigo-600 hover:underline focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
                     Sign in
-                  </a>
+                  </Link>
                 </p>
               </div>
             </form>
@@ -315,7 +312,7 @@ const Register = () => {
       </div>
 
       {/* Custom CSS for animations */}
-  <style>{`
+      <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0px) translateX(0px); }
           25% { transform: translateY(-20px) translateX(10px); }

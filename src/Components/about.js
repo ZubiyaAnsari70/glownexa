@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Zap, Smartphone, Microscope, ArrowRight, Sparkles } from 'lucide-react';
+import { Link, useNavigate } from "react-router-dom";
 
 export default function About() {
+  const [showAnalysisPopup, setShowAnalysisPopup] = useState(false);
+  const navigate = useNavigate();
+  const isAuthenticated = localStorage.getItem("isAuthenticated");
 
   const features = [
     {
@@ -14,7 +18,7 @@ export default function About() {
       title: 'Instant Results',
       description: 'Get preliminary diagnosis and recommendations in seconds, not days. Save time without compromising accuracy.'
     },
-   
+
     {
       icon: Smartphone,
       title: 'User-Friendly',
@@ -41,7 +45,35 @@ export default function About() {
     }
   ];
 
- 
+  const handleGetStartedClick = () => {
+    setShowAnalysisPopup(true);
+  };
+
+  const closeAnalysisPopup = () => {
+    setShowAnalysisPopup(false);
+  };
+
+  const handleSkinAnalysis = () => {
+    if (isAuthenticated) {
+      closeAnalysisPopup();
+      navigate("/skinScan");
+    } else {
+      closeAnalysisPopup();
+      navigate("/login", { state: { from: "/skinScan" } });
+    }
+  };
+
+  const handleHairAnalysis = () => {
+    if (isAuthenticated) {
+      closeAnalysisPopup();
+      navigate("/hairScan");
+    } else {
+      closeAnalysisPopup();
+      navigate("/login", { state: { from: "/hairScan" } });
+    }
+  };
+
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-teal-50 to-cyan-50">
       <style>{`
@@ -97,14 +129,81 @@ export default function About() {
             <Sparkles className="w-6 h-6 text-cyan-600" />
             GlowNexa
           </div>
-          <ul className="hidden md:flex gap-8 text-gray-700 font-medium">
-            <li><a href="#home" className="hover:text-cyan-600 transition-colors duration-300">Home</a></li>
-            <li><a href="#about" className="hover:text-cyan-600 transition-colors duration-300">About</a></li>
 
-            <li><a href="#contact" className="hover:text-cyan-600 transition-colors duration-300">Contact</a></li>
+          <ul className="hidden md:flex gap-8 text-gray-700 font-medium">
+            <li>
+              <Link to="/" className="hover:text-cyan-600 transition-colors duration-300">
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link to="/about" className="hover:text-cyan-600 transition-colors duration-300">
+                About
+              </Link>
+            </li>
+            <li>
+              <Link to="/contact" className="hover:text-cyan-600 transition-colors duration-300">
+                Contact
+              </Link>
+            </li>
           </ul>
         </div>
       </nav>
+
+      {/* Analysis Selection Popup */}
+      {showAnalysisPopup && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center animate-fade-in">
+          <div className="bg-white rounded-3xl shadow-2xl p-8 max-w-lg w-full mx-4 relative overflow-hidden">
+            {/* Animated background elements */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-cyan-400/20 to-teal-400/20 rounded-full -translate-y-8 translate-x-8 animate-pulse"></div>
+            <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-br from-teal-400/20 to-blue-400/20 rounded-full translate-y-4 -translate-x-4 animate-pulse"></div>
+
+            {/* Close button */}
+            <button
+              onClick={closeAnalysisPopup}
+              className="absolute top-6 right-6 w-8 h-8 bg-slate-100 hover:bg-slate-200 rounded-full flex items-center justify-center text-slate-600 font-bold transition-all duration-300 hover:scale-110 z-10"
+            >
+              ✕
+            </button>
+
+            {/* Content */}
+            <div className="text-center relative z-10">
+              <div className="w-16 h-16 bg-gradient-to-r from-cyan-600 to-teal-600 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-lg">
+                <span className="text-white text-2xl">🔍</span>
+              </div>
+
+              <h3 className="text-3xl font-bold text-slate-900 mb-4">Choose Your Analysis</h3>
+              <p className="text-slate-600 mb-8 text-lg leading-relaxed">
+                Select the type of analysis you'd like to perform with our AI-powered technology
+              </p>
+
+              <div className="space-y-4">
+                <button
+                  onClick={handleSkinAnalysis}
+                  className="w-full bg-gradient-to-r from-cyan-600 to-teal-600 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:shadow-xl hover:shadow-cyan-500/25 transform hover:scale-105 transition-all duration-300 hover:-translate-y-1 flex items-center justify-center gap-3"
+                >
+                  <span className="text-2xl">🧴</span>
+                  Analyze Your Skin
+                  <span className="ml-auto">→</span>
+                </button>
+
+                <button
+                  onClick={handleHairAnalysis}
+                  className="w-full bg-gradient-to-r from-teal-600 to-blue-600 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:shadow-xl hover:shadow-teal-500/25 transform hover:scale-105 transition-all duration-300 hover:-translate-y-1 flex items-center justify-center gap-3"
+                >
+                  <span className="text-2xl">💇</span>
+                  Analyze Your Hair
+                  <span className="ml-auto">→</span>
+                </button>
+              </div>
+
+              <p className="text-slate-500 text-sm mt-6">
+                Both analyses use advanced AI technology for accurate results
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Hero Section */}
       <div className="relative py-24 px-4 overflow-hidden">
@@ -128,7 +227,7 @@ export default function About() {
 
       {/* Main Container */}
       <div className="max-w-6xl mx-auto px-4 py-12">
-        
+
         {/* Mission Section */}
         <div className="fade-in-up bg-white/60 backdrop-blur rounded-2xl shadow-lg p-12 mb-12 border border-cyan-100/50 hover:shadow-2xl transition-shadow duration-500">
           <div className="flex items-center gap-3 mb-6">
@@ -196,8 +295,6 @@ export default function About() {
           </div>
         </div>
 
-       
-
         {/* Journey Section */}
         <div className="fade-in-up bg-white/60 backdrop-blur rounded-2xl shadow-lg p-12 mb-12 border border-cyan-100/50 hover:shadow-2xl transition-shadow duration-500">
           <div className="flex items-center gap-3 mb-6">
@@ -218,7 +315,10 @@ export default function About() {
           <div className="relative z-10">
             <h2 className="text-4xl font-bold text-white mb-4">Ready to Transform Your Skin & Hair Health?</h2>
             <p className="text-lg text-white/90 mb-8 max-w-2xl mx-auto">Join thousands of users who trust GlowNexa for their dermatological needs.</p>
-            <button className="bg-white text-cyan-600 px-10 py-4 rounded-xl font-bold hover:scale-105 hover:shadow-2xl transition-all duration-300 flex items-center justify-center gap-2 mx-auto hover:gap-3">
+            <button
+              onClick={handleGetStartedClick}
+              className="bg-white text-cyan-600 px-10 py-4 rounded-xl font-bold hover:scale-105 hover:shadow-2xl transition-all duration-300 flex items-center justify-center gap-2 mx-auto hover:gap-3"
+            >
               Get Started Today
               <ArrowRight className="w-5 h-5" />
             </button>
@@ -226,9 +326,8 @@ export default function About() {
         </div>
       </div>
 
-      {/* Footer (styled like Home footer but with About page colors) */}
+      {/* Footer */}
       <footer className="bg-white/60 backdrop-blur border-t border-cyan-100/50 text-gray-700 py-16 relative overflow-hidden mt-12">
-        {/* Decorative background shapes (subtle, matching About color scheme) */}
         <div className="absolute inset-0 opacity-6">
           <div className="absolute top-10 left-10 w-40 h-40 bg-cyan-200 rounded-full float blur-3xl"></div>
           <div className="absolute bottom-10 right-10 w-32 h-32 bg-teal-200 rounded-full float blur-3xl"></div>
@@ -238,8 +337,8 @@ export default function About() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="col-span-1 md:col-span-2 slide-in-left">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-gradient-to-r from-cyan-600 to-teal-600 rounded-full flex items-center justify-center animate-bounce-subtle hover:scale-110 transition-all duration-300">
-                  <span className="text-white font-bold text-xl animate-pulse">G</span>
+                <div className="w-12 h-12 bg-gradient-to-r from-cyan-600 to-teal-600 rounded-full flex items-center justify-center hover:scale-110 transition-all duration-300">
+                  <span className="text-white font-bold text-xl">G</span>
                 </div>
                 <h3 className="text-2xl font-bold">GlowNexa</h3>
               </div>
@@ -250,40 +349,51 @@ export default function About() {
                 <div className="w-10 h-10 bg-white/60 rounded-full flex items-center justify-center border border-cyan-100 hover:bg-cyan-50 transition-all duration-300 cursor-pointer hover:scale-110">
                   <span className="text-sm">📧</span>
                 </div>
-                <div className="w-10 h-10 bg-white/60 rounded-full flex items-center justify-center border border-cyan-100 hover:bg-teal-50 transition-all duration-300 cursor-pointer hover:scale-110" style={{animationDelay: '0.1s'}}>
+                <div className="w-10 h-10 bg-white/60 rounded-full flex items-center justify-center border border-cyan-100 hover:bg-teal-50 transition-all duration-300 cursor-pointer hover:scale-110">
                   <span className="text-sm">📱</span>
                 </div>
-                <div className="w-10 h-10 bg-white/60 rounded-full flex items-center justify-center border border-cyan-100 hover:bg-blue-50 transition-all duration-300 cursor-pointer hover:scale-110" style={{animationDelay: '0.2s'}}>
+                <div className="w-10 h-10 bg-white/60 rounded-full flex items-center justify-center border border-cyan-100 hover:bg-blue-50 transition-all duration-300 cursor-pointer hover:scale-110">
                   <span className="text-sm">🌐</span>
                 </div>
               </div>
             </div>
 
-            <div className="slide-in" style={{animationDelay: '0.2s'}}>
+            <div>
               <h4 className="text-lg font-semibold mb-4 text-cyan-600">Services</h4>
               <ul className="space-y-2 text-gray-600">
-                <li className="hover:text-cyan-700 transition-all duration-300 cursor-pointer hover:translate-x-2 fade-in-up">Skin Analysis</li>
-                <li className="hover:text-cyan-700 transition-all duration-300 cursor-pointer hover:translate-x-2 fade-in-up" style={{animationDelay: '0.1s'}}>Hair Analysis</li>
-                <li className="hover:text-cyan-700 transition-all duration-300 cursor-pointer hover:translate-x-2 fade-in-up" style={{animationDelay: '0.2s'}}>Treatment Plans</li>
-                <li className="hover:text-cyan-700 transition-all duration-300 cursor-pointer hover:translate-x-2 fade-in-up" style={{animationDelay: '0.3s'}}>Product Recommendations</li>
+                <li className="hover:text-cyan-700 transition-all duration-300 cursor-pointer hover:translate-x-2">
+                  <Link to="/skinScan">Skin Analysis</Link>
+                </li>
+                <li className="hover:text-cyan-700 transition-all duration-300 cursor-pointer hover:translate-x-2">
+                  <Link to="/hairScan">Hair Analysis</Link>
+                </li>
+                <li className="hover:text-cyan-700 transition-all duration-300 cursor-pointer hover:translate-x-2">
+                  <Link to="/History">History</Link>
+                </li>
               </ul>
             </div>
 
-            <div className="slide-in" style={{animationDelay: '0.4s'}}>
+            <div>
               <h4 className="text-lg font-semibold mb-4 text-teal-600">Support</h4>
               <ul className="space-y-2 text-gray-600">
-                <li className="hover:text-cyan-700 transition-all duration-300 cursor-pointer hover:translate-x-2 fade-in-up">Help Center</li>
-                <li className="hover:text-cyan-700 transition-all duration-300 cursor-pointer hover:translate-x-2 fade-in-up" style={{animationDelay: '0.1s'}}>Contact Us</li>
-                <li className="hover:text-cyan-700 transition-all duration-300 cursor-pointer hover:translate-x-2 fade-in-up" style={{animationDelay: '0.2s'}}>Privacy Policy</li>
-                <li className="hover:text-cyan-700 transition-all duration-300 cursor-pointer hover:translate-x-2 fade-in-up" style={{animationDelay: '0.3s'}}>Terms of Service</li>
+                <li className="hover:text-cyan-700 transition-all duration-300 cursor-pointer hover:translate-x-2">
+                  <Link to="/about">About</Link>
+                </li>
+                <li className="hover:text-cyan-700 transition-all duration-300 cursor-pointer hover:translate-x-2">
+                  <Link to="/contact">Contact Us</Link>
+                </li>
+                <li className="hover:text-cyan-700 transition-all duration-300 cursor-pointer hover:translate-x-2">
+                  <Link to="/privacy-policy">Privacy Policy</Link>
+                </li>
+                <li className="hover:text-cyan-700 transition-all duration-300 cursor-pointer hover:translate-x-2">
+                  <Link to="/AiInfo">Learn more about AI</Link>
+                </li>
               </ul>
             </div>
           </div>
 
           <div className="border-t border-cyan-100 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center fade-in-up">
-            <p className="text-gray-600 text-sm">
-              © 2025 GlowNexa. All rights reserved.
-            </p>
+            <p className="text-gray-600 text-sm">© 2025 GlowNexa. All rights reserved.</p>
             <p className="text-gray-600 text-sm mt-4 md:mt-0">
               Made with ❤️ for healthier skin and hair
             </p>

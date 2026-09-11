@@ -6,12 +6,12 @@ import { auth } from "./firebase";
 const ProtectedRoute = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setLoading(false);
-      
+
       // Sync localStorage with Firebase auth state
       if (currentUser && currentUser.emailVerified) {
         localStorage.setItem("isAuthenticated", "true");
@@ -36,7 +36,7 @@ const ProtectedRoute = ({ children }) => {
 
   // Check if user is authenticated and email is verified
   const isAuthenticated = user && user.emailVerified;
-  
+
   if (!isAuthenticated) {
     // If user exists but email not verified, redirect to verify page
     if (user && !user.emailVerified) {

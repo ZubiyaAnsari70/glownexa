@@ -1,65 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { applyActionCode, sendEmailVerification, onAuthStateChanged } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
+import { sendEmailVerification, onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase';
 
 const EmailVerificationHandler = () => {
-  const [searchParams] = useSearchParams();
+
   const navigate = useNavigate();
   const [status, setStatus] = useState('checking'); // checking, waiting, verifying, success, error
   const [message, setMessage] = useState('');
   const [currentUser, setCurrentUser] = useState(null);
   const [sendingEmail, setSendingEmail] = useState(false);
 
+
   useEffect(() => {
-    // Check if user is logged in
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
-      if (!user) {
-        // If no user is logged in, redirect to login
+      if (user) {
+    
+        setCurrentUser(user);
+        setStatus('waiting');
+        setMessage("We've sent a verification email to your inbox.");
+      } else {
+
         navigate('/login');
-        return;
       }
     });
 
     return () => unsubscribe();
-  }, [navigate]);
+  }, [navigate]); // 'navigate' ko dependency mein rakha
 
-  useEffect(() => {
-    const handleEmailVerification = async () => {
-      const actionCode = searchParams.get('oobCode');
-      const mode = searchParams.get('mode');
-
-      if (mode === 'verifyEmail' && actionCode) {
-        setStatus('verifying');
-        setMessage('Verifying your email...');
-        
-        try {
-          await applyActionCode(auth, actionCode);
-          setStatus('success');
-          setMessage('Your email has been verified successfully!');
-          
-          // Redirect to login after 3 seconds
-          setTimeout(() => {
-            navigate('/login');
-          }, 3000);
-          
-        } catch (error) {
-          console.error('Email verification error:', error);
-          setStatus('error');
-          setMessage('Failed to verify email. The link may be expired or invalid.');
-        }
-      } else {
-        // No verification parameters - show waiting screen
-        setStatus('waiting');
-        setMessage('We\'ve sent a verification email to your inbox.');
-      }
-    };
-
-    if (currentUser) {
-      handleEmailVerification();
-    }
-  }, [searchParams, navigate, currentUser]);
 
   const handleResendEmail = async () => {
     if (!currentUser) {
@@ -68,16 +36,16 @@ const EmailVerificationHandler = () => {
     }
 
     setSendingEmail(true);
-    
+
     try {
       const actionCodeSettings = {
-        url: 'https://glownexa.vercel.app/verify',
+        url: 'http://localhost:3000/verify',
         handleCodeInApp: false,
       };
 
       await sendEmailVerification(currentUser, actionCodeSettings);
       setMessage('Verification email sent successfully! Please check your inbox.');
-      
+
     } catch (error) {
       console.error('Error sending verification email:', error);
       setMessage('Failed to send verification email. Please try again.');
@@ -90,7 +58,7 @@ const EmailVerificationHandler = () => {
     <div className="h-screen relative overflow-hidden flex items-center justify-center">
       {/* Background similar to your register page */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-100 via-purple-50 to-pink-100"></div>
-      
+
       {/* Floating Animated Objects */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-10 left-10 w-64 h-64 bg-blue-200 bg-opacity-20 rounded-full blur-xl animate-float"></div>
@@ -115,11 +83,11 @@ const EmailVerificationHandler = () => {
               <h2 className="text-3xl font-bold text-gray-800 mb-4">Check Your Inbox</h2>
               <p className="text-lg text-gray-600 mb-6">{message}</p>
               <p className="text-gray-500 mb-8 leading-relaxed">
-                We've sent a verification link to your email address. 
+                We've sent a verification link to your email address.
                 <br />
                 Please check your email and click on the verification link to continue.
               </p>
-              
+
               {/* Action Buttons */}
               <div className="space-y-4">
                 <button
@@ -136,7 +104,7 @@ const EmailVerificationHandler = () => {
                     'Send Email Again'
                   )}
                 </button>
-                
+
                 <button
                   onClick={() => navigate('/login')}
                   className="w-full py-3 bg-gray-500 hover:bg-gray-600 text-white font-bold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
@@ -144,7 +112,7 @@ const EmailVerificationHandler = () => {
                   Back to Login
                 </button>
               </div>
-              
+
               {/* Additional Info */}
               <div className="mt-8 p-4 bg-white/20 backdrop-blur-sm rounded-lg border border-white/30">
                 <p className="text-sm text-gray-600">
@@ -159,7 +127,7 @@ const EmailVerificationHandler = () => {
               </div>
             </>
           )}
-          
+
           {status === 'verifying' && (
             <>
               <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500 mx-auto mb-4"></div>
@@ -167,14 +135,14 @@ const EmailVerificationHandler = () => {
               <p className="text-gray-600">{message}</p>
             </>
           )}
-          
+
           {status === 'success' && (
             <>
               <div className="text-green-500 text-8xl mb-6">✓</div>
               <h2 className="text-3xl font-bold text-gray-800 mb-4">Email Verified!</h2>
               <p className="text-lg text-gray-600 mb-4">{message}</p>
               <p className="text-gray-500">Redirecting to login page in 3 seconds...</p>
-              
+
               <button
                 onClick={() => navigate('/login')}
                 className="mt-4 py-2 px-6 bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg transition duration-300"
@@ -183,13 +151,13 @@ const EmailVerificationHandler = () => {
               </button>
             </>
           )}
-          
+
           {status === 'error' && (
             <>
               <div className="text-red-500 text-8xl mb-6">✗</div>
               <h2 className="text-3xl font-bold text-gray-800 mb-4">Verification Failed</h2>
               <p className="text-lg text-gray-600 mb-6">{message}</p>
-              
+
               <div className="space-y-4">
                 <button
                   onClick={handleResendEmail}
@@ -198,7 +166,7 @@ const EmailVerificationHandler = () => {
                 >
                   {sendingEmail ? 'Sending...' : 'Send New Verification Email'}
                 </button>
-                
+
                 <button
                   onClick={() => navigate('/login')}
                   className="w-full py-3 bg-gray-500 hover:bg-gray-600 text-white font-bold rounded-lg transition duration-300"
@@ -212,7 +180,7 @@ const EmailVerificationHandler = () => {
       </div>
 
       {/* Custom CSS for animations */}
-  <style>{`
+      <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0px) translateX(0px); }
           25% { transform: translateY(-20px) translateX(10px); }

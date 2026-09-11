@@ -5,7 +5,7 @@
 const cloudinaryConfig = {
   cloud_name: process.env.REACT_APP_CLOUDINARY_CLOUD_NAME,
   upload_preset: process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET,
-  
+
 };
 
 // Upload image to Cloudinary using unsigned upload (browser-compatible)
@@ -38,20 +38,20 @@ export const uploadToCloudinary = async (file) => {
     formData.append('file', file);
     formData.append('upload_preset', cloudinaryConfig.upload_preset);
     formData.append('cloud_name', cloudinaryConfig.cloud_name);
-    
+
     // Optional: Add folder organization
     formData.append('folder', 'skin_analysis');
-    
+
     // Optional: Add tags for better organization
     formData.append('tags', 'skin_analysis,glownexa');
-    
+
     // Optional: Add context metadata
     const timestamp = new Date().toISOString();
     formData.append('context', `upload_date=${timestamp}|source=glownexa_app`);
 
     // Upload to Cloudinary
     const uploadUrl = `https://api.cloudinary.com/v1_1/${cloudinaryConfig.cloud_name}/image/upload`;
-    
+
     const response = await fetch(uploadUrl, {
       method: 'POST',
       body: formData,
@@ -64,7 +64,7 @@ export const uploadToCloudinary = async (file) => {
     }
 
     const data = await response.json();
-    
+
     // Return success response with all necessary data
     return {
       success: true,
@@ -97,13 +97,13 @@ export const generateCloudinaryUrl = (publicId, transformations = {}) => {
   let transformString = '';
   if (Object.keys(transformations).length > 0) {
     const transforms = [];
-    
+
     if (transformations.width) transforms.push(`w_${transformations.width}`);
     if (transformations.height) transforms.push(`h_${transformations.height}`);
     if (transformations.quality) transforms.push(`q_${transformations.quality}`);
     if (transformations.format) transforms.push(`f_${transformations.format}`);
     if (transformations.crop) transforms.push(`c_${transformations.crop}`);
-    
+
     if (transforms.length > 0) {
       transformString = `/${transforms.join(',')}`;
     }

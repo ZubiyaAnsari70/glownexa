@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from './firebase'; // Same components folder
 
@@ -12,7 +12,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [emailError, setEmailError] = useState('');
-  
+
   // Forgot password states
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
@@ -48,7 +48,7 @@ const Login = () => {
   const handleForgotEmailChange = (e) => {
     const email = e.target.value;
     setForgotPasswordEmail(email);
-    
+
     if (email && !validateEmail(email)) {
       setForgotEmailError('Please enter a valid email address');
     } else {
@@ -72,20 +72,20 @@ const Login = () => {
       // Sign in directly with email and password
       const userCredential = await signInWithEmailAndPassword(auth, formData.email, formData.password);
       const user = userCredential.user;
-      
+
       // Check if email is verified
       if (!user.emailVerified) {
         setError('Please verify your email before logging in. Check your inbox for verification link.');
         return;
       }
-      
+
       console.log('User logged in successfully');
       localStorage.setItem("isAuthenticated", "true");
       navigate("/"); // Use React Router navigate instead of window.location
-      
+
     } catch (error) {
       console.error('Login error:', error);
-      
+
       // Better error messages
       switch (error.code) {
         case 'auth/user-not-found':
@@ -119,36 +119,27 @@ const Login = () => {
     setForgotPasswordLoading(true);
     setForgotPasswordError('');
     setForgotPasswordMessage('');
-  
+
     // Validate email before sending reset
     if (!validateEmail(forgotPasswordEmail)) {
       setForgotEmailError('Please enter a valid email address');
       setForgotPasswordLoading(false);
       return;
     }
-  
     try {
-      // Option 1: Simple reset without custom URL (Recommended)
+      // Simple reset without custom URL (Recommended)
       await sendPasswordResetEmail(auth, forgotPasswordEmail);
-      
-      // Option 2: With custom action settings (if needed)
-      /*
-      await sendPasswordResetEmail(auth, forgotPasswordEmail, {
-        url: 'https://glownexa-7688e.firebaseapp.com/login', // Your actual domain
-        handleCodeInApp: false
-      });
-      */
-      
+
       setForgotPasswordMessage('Password reset email sent! Please check your inbox and spam folder.');
-      
+
       // Clear the email field after successful send
       setTimeout(() => {
         setForgotPasswordEmail('');
       }, 2000);
-      
+
     } catch (error) {
       console.error('Forgot password error:', error);
-      
+
       switch (error.code) {
         case 'auth/user-not-found':
           setForgotPasswordError('No account found with this email address.');
@@ -179,23 +170,23 @@ const Login = () => {
     <div className="h-screen relative overflow-hidden flex items-center justify-center">
       {/* Static Light Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-100 via-purple-50 to-pink-100"></div>
-      
+
       {/* Floating Animated Objects */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Large floating circles */}
         <div className="absolute top-10 left-10 w-64 h-64 bg-blue-200 bg-opacity-20 rounded-full blur-xl animate-float"></div>
         <div className="absolute top-32 right-20 w-80 h-80 bg-purple-200 bg-opacity-15 rounded-full blur-2xl animate-float-delayed"></div>
         <div className="absolute bottom-20 left-1/4 w-72 h-72 bg-pink-200 bg-opacity-20 rounded-full blur-xl animate-pulse-slow"></div>
-        
+
         {/* Medium floating shapes */}
         <div className="absolute top-1/4 left-1/2 w-48 h-48 bg-indigo-200 bg-opacity-15 rounded-full blur-lg animate-bounce-slow"></div>
         <div className="absolute bottom-1/3 right-1/4 w-56 h-56 bg-violet-200 bg-opacity-20 rounded-full blur-xl animate-float-reverse"></div>
-        
+
         {/* Small animated dots */}
         <div className="absolute top-20 left-1/3 w-16 h-16 bg-blue-300 bg-opacity-40 rounded-full animate-ping"></div>
         <div className="absolute bottom-40 right-1/3 w-12 h-12 bg-purple-300 bg-opacity-50 rounded-full animate-pulse"></div>
         <div className="absolute top-1/2 left-20 w-20 h-20 bg-pink-300 bg-opacity-35 rounded-full animate-bounce"></div>
-        
+
         {/* Geometric shapes */}
         <div className="absolute top-1/3 right-10 w-32 h-32 bg-gradient-to-r from-blue-300 to-purple-400 opacity-30 transform rotate-45 animate-spin-slow"></div>
         <div className="absolute bottom-1/4 left-1/3 w-24 h-24 bg-gradient-to-r from-indigo-300 to-pink-400 opacity-35 transform rotate-12 animate-wiggle"></div>
@@ -203,13 +194,13 @@ const Login = () => {
 
       {/* Glass container - Transparent */}
       <div className="relative z-10 w-11/12 md:w-4/5 max-w-6xl bg-white/10 backdrop-blur-lg rounded-xl shadow-2xl flex flex-col md:flex-row overflow-hidden h-[50vh] border border-white/30">
-        
+
         {/* Left Section with Light Gradient */}
         <div className="w-full md:w-1/2 h-full hidden md:block relative overflow-hidden">
           {/* Light gradient background */}
           <div className="absolute inset-0 bg-gradient-to-br from-blue-200 via-purple-200 to-pink-200"></div>
           <div className="absolute inset-0 bg-gradient-to-tl from-indigo-100 via-transparent to-transparent opacity-60"></div>
-          
+
           {/* Animated overlay patterns */}
           <div className="absolute inset-0">
             <div className="absolute top-1/4 left-1/4 w-32 h-32 border-2 border-white/50 rounded-full animate-pulse"></div>
@@ -217,7 +208,7 @@ const Login = () => {
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 border-4 border-white/40 rounded-full animate-spin-slow"></div>
             <div className="absolute top-16 right-16 w-16 h-16 bg-blue-300/40 rotate-45 animate-bounce"></div>
           </div>
-          
+
           {/* Welcome content */}
           <div className="relative z-10 h-full flex items-center justify-center text-gray-800 text-center">
             <div>
@@ -231,7 +222,7 @@ const Login = () => {
         <div className="w-full md:w-1/2 p-8 text-gray-800 flex items-center h-full relative">
           <div className="w-full px-10 relative z-10">
             <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Sign In</h2>
-            
+
             {error && (
               <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg">
                 {error}
@@ -246,11 +237,10 @@ const Login = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className={`w-full px-4 py-3 rounded-lg bg-white backdrop-blur-sm text-gray-800 placeholder-gray-600 outline-none focus:ring-2 transition-all duration-300 border ${
-                    emailError 
-                      ? 'border-red-400 focus:ring-red-400/50' 
-                      : 'border-white/40 focus:ring-blue-400/50'
-                  } focus:bg-white/30`}
+                  className={`w-full px-4 py-3 rounded-lg bg-white backdrop-blur-sm text-gray-800 placeholder-gray-600 outline-none focus:ring-2 transition-all duration-300 border ${emailError
+                    ? 'border-red-400 focus:ring-red-400/50'
+                    : 'border-white/40 focus:ring-blue-400/50'
+                    } focus:bg-white/30`}
                   placeholder="Enter your email"
                   required
                 />
@@ -258,7 +248,7 @@ const Login = () => {
                   <p className="mt-1 text-sm text-red-600">{emailError}</p>
                 )}
               </div>
-              
+
               <div>
                 <label className="block mb-1 font-medium text-gray-700">Password</label>
                 <input
@@ -271,7 +261,7 @@ const Login = () => {
                   required
                 />
               </div>
-              
+
               <button
                 type="submit"
                 disabled={loading || emailError}
@@ -279,19 +269,19 @@ const Login = () => {
               >
                 {loading ? 'Signing In...' : 'Login'}
               </button>
-              
+
               <div className="w-full flex items-center justify-center mt-6">
                 <p className="text-sm text-gray-600">
                   Don't have an account?{" "}
-                  <a
-                    href="/register"
+                  <Link
+                    to="/register"
                     className="font-medium text-indigo-600 hover:underline focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
                     Sign Up here
-                  </a>
+                  </Link>
                 </p>
               </div>
-              
+
               {/* Forgot Password Link */}
               <div className="text-center">
                 <button
@@ -335,11 +325,10 @@ const Login = () => {
                   type="email"
                   value={forgotPasswordEmail}
                   onChange={handleForgotEmailChange}
-                  className={`w-full px-4 py-3 rounded-lg bg-white/70 backdrop-blur-sm text-gray-800 placeholder-gray-600 outline-none focus:ring-2 transition-all duration-300 border ${
-                    forgotEmailError 
-                      ? 'border-red-400 focus:ring-red-400/50' 
-                      : 'border-white/40 focus:ring-blue-400/50'
-                  } focus:bg-white/90`}
+                  className={`w-full px-4 py-3 rounded-lg bg-white/70 backdrop-blur-sm text-gray-800 placeholder-gray-600 outline-none focus:ring-2 transition-all duration-300 border ${forgotEmailError
+                    ? 'border-red-400 focus:ring-red-400/50'
+                    : 'border-white/40 focus:ring-blue-400/50'
+                    } focus:bg-white/90`}
                   placeholder="Enter your email address"
                   required
                 />
@@ -347,7 +336,7 @@ const Login = () => {
                   <p className="mt-1 text-sm text-red-600">{forgotEmailError}</p>
                 )}
               </div>
-              
+
               <div className="flex space-x-3">
                 <button
                   type="button"
@@ -377,7 +366,7 @@ const Login = () => {
       </div>
 
       {/* Custom CSS for animations */}
-  <style>{`
+      <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0px) translateX(0px); }
           25% { transform: translateY(-20px) translateX(10px); }
